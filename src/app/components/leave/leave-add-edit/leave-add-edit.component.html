@@ -1,0 +1,223 @@
+
+
+<main id="main" class="main" *ngIf="loading">
+    <div class="pagetitle container-fluid">
+        <h1>{{title}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/leave">Requests </a></li>
+                <li class="breadcrumb-item"> {{title}}</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <section class="section container-fluid">
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mb-3 card-size" >
+                    <div class="card-body">
+                       <div class="pt-4 pb-4">
+                          <h5 class="card-title text-center pb-0 fs-4">{{title}}</h5>
+                        </div>
+                       <form class="row g-4 needs-validation" [formGroup]="addForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <div class="col-md-6 position-relative" *ngIf="employees && employees.length">
+                            <label for="employees" class="form-label">Employee</label>
+                            <select id="employees" class="form-select w-100" formControlName="user" name="user" required (change)="onUserSelect($event)" [attr.disabled]="id ? true : null">
+                                <option value="" disabled>Select an employee</option>
+                                <option *ngFor="let employee of employees" [value]="employee._id">{{ employee.name }}</option>
+                            </select>
+                            
+                            <div class="invalid-tooltip">
+                                Employee is required.
+                            </div>
+                        </div>
+                        
+                        
+                        
+
+                            <div class="col-md-4 position-relative">
+                                <label for="timeOffType" class="form-label">Time Off Type</label>
+                                <select id="timeOffType" class="form-select w-100" formControlName="leaveType" name="leaveType" required (change)="onTimeOffType($event)">
+                                    <option value="" disabled>Select time off type</option>
+                                    <option *ngFor="let timeOffType of timeOffTypes" [value]="timeOffType">{{ timeOffType }}</option>
+                                </select>
+                                <div class="invalid-tooltip">
+                                    Time Off Type is required.
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-12 position-relative" >
+                                <label for="isAllDay" class="form-label">All Day</label>
+                                <a class="form-check form-switch small toggle-button">
+                                    <input class="form-check-input" type="checkbox" role="switch" formControlName="isAllDay" (change)="onToggle($event)"/>
+                                </a>
+                            </div>
+                            
+
+                            <div class="row gap-4 mt-4" *ngIf="addForm.get('isAllDay')?.value">
+                                <div class="col">
+                                    <!-- <label for="dob" class="form-label">From :</label> -->
+                                    <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                                        <mat-label>Start Date</mat-label>
+                                        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" (dateChange)="onFromDateChange($event)">
+                                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #startDatePicker></mat-datepicker>
+                                      </mat-form-field>
+                                </div>
+                                
+                            
+                                <div class="col ">
+                                    <!-- <label for="lastDate" class="form-label" style="margin-left: 12px;">To:</label> -->
+                                    <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                                        <mat-label>End Date</mat-label>
+                                        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" (dateChange)="onToDateChange($event)">
+                                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #endDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                      
+                                </div>
+                              
+                            </div>
+
+                            <div class=" row align-items-center mt-4" *ngIf="!addForm.get('isAllDay')?.value" >
+                                <div class="col-md-4">
+                                    <!-- <label for="dob" class="form-label">Date :</label> -->
+                                    <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                                        <mat-label>Date</mat-label>
+                                        <input matInput [matDatepicker]="DatePicker" formControlName="startDate" (dateChange)="partialLeaveDateChange($event)">
+                                        <mat-datepicker-toggle matSuffix [for]="DatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #DatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                          
+
+                            <!-- <div class="row mt-2" *ngIf="!addForm.get('isAllDay')?.value"> -->
+                                <div class="col-md-4 custom-input">
+                                    <div class="input-group">
+                                        <select class="form-control" id="openTime" formControlName="openTime" (change)="onTimeChange($event)">
+                                            <option *ngFor="let time of openTimeOptions" [value]="time">{{ time }}</option>
+                                        </select>
+                                        
+                                    
+                                        <select class="form-control" id="inMediterian" formControlName="inMediterian" (change)="onTimeChange($event)">
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 custom-input">
+                                    <div class="input-group" style="margin-left: 25px;">
+                                        <select class="form-control" id="closeTime" formControlName="closeTime" (change)="onTimeChange($event)">
+                                            <option *ngFor="let time of closeTimeOptions" [value]="time">{{ time }}</option>
+                                        </select>
+                                    
+                                        <select class="form-control" id="outMediterian" formControlName="outMediterian" (change)="onTimeChange($event)">
+                                            <option value="PM">PM</option>
+                                            <option value="AM">AM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <div class="col-12 ms-1 d-flex align-items-baseline gap-3">
+                                <label for="reasons" class="form-label">Reasons</label>
+                                <div class="input-group has-validation">
+                                    <textarea name="reasons" class="form-control" id="reasons" formControlName="reasons" required> </textarea>
+                                    <div class="invalid-feedback">Please choose a ID.</div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3" *ngIf="addForm.get('leaveType')?.value === 'Paid Time Off'">
+
+                                <div class="col-6 text-end">
+                                    Total Requested Time Off
+                                </div> 
+                                <div class="col-6">
+                                    <b>{{ addForm.value.totalReqTime | number: '1.2-2' }}</b> hrs
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <ng-container *ngIf="addForm.value.totalReqTime < 0">
+                                        <span class="text-danger">Invalid date selected!</span>
+                                    </ng-container>
+                                </div>
+
+
+                                <div class="col-6 text-end">
+                                    Total PTO Available
+                                </div>
+                                <div class="col-6">
+                                    <b>{{ addForm.value.totalLeaveBalance | number: '1.2-2' }}</b> hrs
+                                </div>
+                                <div class="col-6 text-end">
+                                    Total PTO Remaining
+                                </div>
+                                <div class="col-6">
+                                   <b> {{ (addForm.value.totalLeaveBalance - addForm.value.totalReqTime) | number: '1.2-2' }}</b> hrs
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <ng-container *ngIf="addForm.value.totalLeaveBalance - addForm.value.totalReqTime < 0">
+                                        <span class="text-danger">Invalid date selected!</span>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-3" *ngIf="addForm.get('leaveType')?.value === 'Unpaid Time Off'">
+                                <div class="col-6 text-end">
+                                    Total Requested Time Off
+                                </div> 
+                                <div class="col-6">
+                                    <b>{{ addForm.value.totalReqTime | number: '1.2-2' }}</b> hrs
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <ng-container *ngIf="addForm.value.totalReqTime < 0">
+                                        <span class="text-danger">Invalid date selected!</span>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-center mt-3"> 
+                                <button class="btn btn-primary w-30" type="submit" [disabled]="addForm.value.totalLeaveBalance - addForm.value.totalReqTime < 0 && addForm.get('leaveType')?.value === 'Paid Time Off'">Save</button>
+                                <button class="btn btn-danger ms-2" (click)="onCancel($event)">Cancel</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                    <div class="card-footer text-muted text-center">
+                        <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>  
+</ngx-spinner> 
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title text-danger fw-bold" id="deleteModalLabel"></h2>
+          <button type="button" class="btn-close" (click)="noDelete()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you would like to discard all changes?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="noDelete()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+          <button type="button" (click)="onDelete()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

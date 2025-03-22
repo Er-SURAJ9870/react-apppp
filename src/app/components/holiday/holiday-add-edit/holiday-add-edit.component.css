@@ -1,0 +1,74 @@
+
+  /* datepicker */
+  .custom-date-picker {
+    width: 300px; /* Adjust width as needed */
+  }
+  
+  .custom-date-picker .mat-form-field-outline {
+    border-color: #1976d2; /* Customize outline color */
+  }
+  
+  .custom-date-picker .mat-form-field-label {
+    color: #1976d2; /* Customize label color */
+  }
+  
+  .custom-date-picker .mat-datepicker-toggle-active {
+    color: #1976d2; /* Customize icon color when active */
+  }
+  
+  .custom-date-picker input {
+    color: #000; /* Customize input text color */
+  }
+  
+  .mat-calendar {
+    background-color: #fff; /* Customize calendar background color */
+  }
+  
+  .mat-calendar .mat-calendar-header {
+    background-color: #1976d2; /* Customize calendar header background color */
+    color: #fff; /* Customize calendar header text color */
+  }
+  
+  .mat-calendar .mat-calendar-body {
+    color: #000; /* Customize calendar body text color */
+  }
+  
+  .mat-calendar .mat-calendar-body-cell-content.mat-calendar-body-selected {
+    background-color: #1976d2; /* Customize selected date background color */
+    color: #fff; /* Customize selected date text color */
+  }
+  ::ng-deep .mat-datepicker-toggle-default-icon {
+    color: #012970; /* Customize calendar icon color */
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0em;
+}
+::ng-deep .mat-form-field-label {
+  color: #012970;
+}
+  
+  ::ng-deep .mat-calendar {
+    background-color: #f5f5f5; /* Customize calendar background color */
+  }
+  
+  ::ng-deep .mat-calendar-header {
+    background-color: #1976d2; /* Customize calendar header background color */
+    color: white; /* Customize calendar header text color */
+  }
+  ::ng-deep .mat-calendar-arrow {
+    fill: rgb(255 255 255);
+}
+
+  
+  ::ng-deep .mat-calendar-body-cell-content.mat-calendar-body-selected {
+    background-color: #1976d2; /* Customize selected date background color */
+    color: white; /* Customize selected date text color */
+  }
+  ::ng-deep .mat-form-field {
+    font-size: inherit;
+    font-weight: 400;
+    line-height: 1.125;
+    font-family: "Poppins", sans-serif;
+    letter-spacing: normal;
+}

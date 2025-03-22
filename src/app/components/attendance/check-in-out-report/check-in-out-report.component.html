@@ -1,0 +1,238 @@
+<main id="main" class="main">
+    <div class="pagetitle container-fluid">
+        <h1>Time Sheet</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/employee-attendance"> Reports  </a></li>
+                <li class="breadcrumb-item">Timesheets</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="box box-card">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="col-3 mt-3 mb-3 text-center" >
+                                <select id="users" class="form-select" [formControl]="userDropDownForm"
+                                    (change)="onUserSelect($event)">
+                                    <option *ngFor="let user of users" [value]="user._id">
+                                        {{user?.name}} 
+                                    </option>
+                                </select>
+                            </div>
+                          
+
+                            <a (click)="generateExcel()" class="btn btn-secondary btn-sm">Export</a>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 col-12 d-flex-col align-items-center justify-content-start">
+                                <div class="card-text">
+                                    {{user?.employeeType}}
+                                </div>
+                                <div style="font-size: small">
+                                    Pay Rate : $ {{user?.payRate}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 col-12 d-flex  align-items-center justify-content-end">
+                                <!-- <div class="d-flex justify-content-end ms-3"> -->
+                                  
+                                    <div [formGroup]="form" class="d-flex gap-3 flex-wrap">
+                                        <div  *ngIf="isPayCycle">
+                                            <select class="form-select " id="positionFilter" [formControl]="payCycleForm"
+                                                (change)="applyFilter()" style="height: 35px;">
+                                                <option value="">Select Range</option>
+                                                <option *ngFor="let payCycle of payCycles" [value]="payCycle">{{ payCycle }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <!-- <div class="col">
+                                            <select class="form-select" id="positionFilter" formControlName="fromDate"
+                                                (change)="onFromDateChange()">
+                                                <option value="">Select from date</option>
+                                                <option *ngFor="let fromCycle of fromCycles" [value]="fromCycle">{{fromCycle }}</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col">
+                                            <select class="form-select" id="positionFilter" formControlName="toDate"
+                                                (change)="onToDateChange()">
+                                                <option value="">Select to date</option>
+                                                <option *ngFor="let toCycle of toCycles" [value]="toCycle">{{ toCycle }}
+                                                </option>
+                                            </select>
+
+                                        </div> -->
+                                    </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                        <div *ngIf= "isProgress" class="progress mt-2 mb-2">
+                            <div class="progress-bar" role="progressbar" [style.width.%]="dynamicValue" [attr.aria-valuenow]="dynamicValue" aria-valuemin="0" aria-valuemax="100">{{ dynamicValue }}%</div>
+                        </div>
+
+
+                        <div class="border-top mt-3" style="margin-bottom: -8px;">
+                            <form [formGroup]="form">
+                                <div class="row mb-3 mt-3 row-line">
+                                  
+                                    <div class="col text-center" >
+                                        <div class="col b-ele">
+                                            {{ totalSum?.timeoff || '---'}}
+                                        </div>
+                                        <div class="col">
+                                            Time-off
+                                        </div>
+                                    </div>
+                                    <div class="col text-center">
+                                        <div class="col b-ele">
+                                            {{ totalSum?.regularHrs === '00:00' ? '---' : totalSum?.regularHrs }}
+                                        </div>
+                                        <div class="col">
+                                            Paid hrs
+                                        </div>
+                                    </div>
+                                    <div class="col text-center">
+                                        <div class="col b-ele">
+                                            $ {{ totalSum?.grossPay }}
+                                        </div>
+                                        <div class="col">
+                                            Gross Pay
+                                        </div>
+                                    </div>
+                                    <div class="col text-center">
+                                        <div class="col b-ele">
+                                            {{ totalSum?.overTime || '---'}}
+                                        </div>
+                                        <div class="col">
+                                            Bank Hrs
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col text-center">
+                                        <div class="col b-ele">
+                                            {{ totalSum?.netHours === '00:00' ? '---' : totalSum?.netHours }}
+                                        </div>
+                                        <div class="col">
+                                            Work hrs
+                                        </div>
+                                    </div>
+                                    <div class="col text-center" *ngIf="form.get('fromDate')?.value && form.get('toDate')?.value"
+                                  >
+                                    <a class="btn btn-info btn-sm" (click)="resetFilters()">Clear </a>
+                                </div>
+                                  
+                                
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="box-body">
+                            <div class="table-container">
+                               <table class="table">
+                                    <thead>
+                                        <tr class="table-header">
+                                            <th scope="col"> Date</th>
+                                            <th scope="col"> Clock-in</th>
+                                            <th scope="col"> Shift Start</th>
+                                            <th scope="col"> Break-1</th>
+                                            <th scope="col"> Lunch Break</th>
+                                            <th scope="col"> Break-2</th>
+                                            <th scope="col"> Add. Break</th>
+                                            <th scope="col"> Clock-out</th>
+                                            <th scope="col"> Shift End</th>
+                                            <th scope="col"> Add. Hrs. Worked</th>
+                                            <th scope="col"> Hrs Worked</th>
+                                            <th scope="col"> Gross Pay</th>
+                                            <th scope="col"> Comments</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody style="border: unset !important;">
+                                        <ng-container *ngFor='let item of employees; let i = index'>
+                                            <tr   *ngIf="item.weekDate" style="background-color: #0d6efdb0; height: 10px;">
+                                                <td colspan="14" style="color: white;">
+                                                    <div class="col sheet">
+                                                        Weekly Summary {{item?.weekDate?.startDate}} to {{item?.weekDate?.lastDate}} &nbsp; &nbsp;
+                                                        &nbsp; &nbsp; &nbsp; &nbsp; Work hrs : {{item?.weekDate?.totalWorkHrs}} &nbsp; &nbsp; &nbsp;
+                                                        &nbsp; &nbsp; &nbsp; &nbsp; Paid hrs : {{item?.weekDate?.regularHrs}} &nbsp; &nbsp; &nbsp;
+                                                        &nbsp; &nbsp; &nbsp; &nbsp; Bank Hrs : {{item?.weekDate?.bankHrs}} &nbsp; &nbsp; &nbsp;
+                                                        &nbsp; &nbsp; &nbsp; &nbsp; Gross Pay : $ {{item?.weekDate?.grossPay}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                           
+                                            <ng-container>
+                                                        <tr class="table-row"  style="padding: 0;" (click)="navigateToEdit(item._id, item.user)">
+                                                         
+                                                            <div >{{ item.createdAt | date: "EEE, MM-dd-yyyy" }}</div>
+                                                                <div>{{ item.clockIn || '---' }}</div>
+                                                                    <div>{{ item.checkIn ? item?.checkIn : '---' }}</div>
+                                                                        <div>{{ item?.break1Time ? item.break1Time + ' mins' : '---' }}</div>
+                                                                            <div>{{ item?.lunchTime ? item.lunchTime + ' mins' : '---' }}</div>
+                                                                                <div>{{ item?.break2Time ? item.break2Time + ' mins' : '---' }}</div>
+                                                                                    <div>{{ item?.additionalBreakInMins ? item.additionalBreakInMins + ' mins' : '---' }}</div>
+                                                                                        <div>{{ item.clockOut || '---' }}</div>
+                                                                                            <div>{{ item.checkOut ? item?.checkOut : '---' }}</div>
+                                                                                                <div>{{ item?.additionalWorkHr ? item.additionalWorkHr : '---' }}</div>
+                                                                                                    <div>{{ item?.netHours ? item?.netHours : '---' }}</div>
+                                                                                                        <div>{{ item?.grossPay ? '$ ' + item?.grossPay : '---' }}</div>
+                                                                <div style="font-size: small;">
+                                                                    {{ item?.remarks ? item?.remarks : '---' }}
+                                                                </div>
+                                                             
+                                                                
+                                                                <div *ngIf="item.message" class="message" style="padding-top: 0; padding-bottom: 3px;">
+                                                                    {{ item.message }}
+                                                                  </div>
+                                                                
+                                                               
+                                                         
+                                                        </tr>
+                                                    </ng-container>
+                                                     
+                                                        <!-- <tr class="table-row" [routerLink]="['/employee-attendance/detail/', item.user]">
+                                                            <div>{{ item?.name }}</div>
+                                                            <div>{{ item.clockIn || '---' }}</div>
+                                                            <div>{{ item.checkIn ? item?.checkIn : '---' }}</div>
+                                                            <div>{{ item?.break1Time ? item.break1Time + ' mins' : '---' }}</div>
+                                                            <div>{{ item?.lunchTime ? item.lunchTime + ' mins' : '---' }}</div>
+                                                            <div>{{ item?.break2Time ? item.break2Time + ' mins' : '---' }}</div>
+                                                            <div>{{ item?.additionalBreakInMins ? item.additionalBreakInMins + ' mins' : '---' }}</div>
+                                                            <div>{{ item.clockOut || '---' }}</div>
+                                                            <div>{{ item.checkOut ? item?.checkOut : '---' }}</div>
+                                                            <div>{{ item?.additionalWorkHr ? item.additionalWorkHr : '---' }}</div>
+                                                            <div>{{ item?.workHrs ? item?.workHrs : '---' }}</div>
+                                                            <div style="font-size: small;" [ngClass]="{'text-red': item.messageType === 'PARTIAL_LEAVE'}">
+                                                              {{ item?.remarks ? item?.remarks : '---' }}
+                                                            </div>
+                                                            <div *ngIf="item.message" class="message">
+                                                              {{ item.message }}
+                                                            </div>
+                                                          </tr> -->
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>
+</ngx-spinner>

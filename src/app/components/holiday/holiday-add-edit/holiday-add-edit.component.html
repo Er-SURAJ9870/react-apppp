@@ -1,0 +1,105 @@
+<main id="main" class="main">
+  <div class="pagetitle container-fluid">
+    <h1>{{title}}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/holiday">Holiday</a></li>
+        <li class="breadcrumb-item">{{title}}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section container-fluid">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card card-size mb-3">
+          <div class="card-body">
+            <div class="pb-2 position-relative">
+              <h5 class="card-title text-center pb-0 fs-4">{{formtitle}}</h5>
+              <div class="position-absolute" style="right: 0; top: 12px;">
+                <button *ngIf="id" class="btn btn-warning ms-2" (click)="onDeleteEvent($event)">Delete</button>
+              </div>
+            </div>
+            <form class="row g-3 needs-validation" [formGroup]="addForm" (ngSubmit)="onSubmit()" novalidate>
+
+              <div class="col-12">
+                <label for="title" class="form-label">Title </label> <input type="text" name="name" class="form-control"
+                  id="title" formControlName="title" required>
+                <div class="invalid-feedback">Please, enter Title!</div>
+              </div>
+
+              <div class="col">
+                <mat-form-field class="custom-date-picker custom-height" appearance="outline">
+                  <mat-label>Date</mat-label>
+                  <input matInput [matDatepicker]="DatePicker" formControlName="startDate">
+                  <mat-datepicker-toggle matSuffix [for]="DatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #DatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+
+
+              <!-- <div class="col-12">
+                             <label for="employeeID" class="form-label">Description</label>
+                             <div class="input-group has-validation">
+                                <textarea name="username" class="form-control" id="employeeID" formControlName="description" required> </textarea>
+                                <div class="invalid-feedback">Please description.</div>
+                             </div>
+                          </div> -->
+
+              <div class="col-12 d-flex justify-content-center">
+                <button class="btn btn-primary w-30 text-center" type="submit">Save</button>
+                <button class="btn btn-danger ms-2" (click)="onCancelEvent($event)">Cancel</button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-muted text-center">
+            <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-danger fw-bold" id="cancelModalLabel"></h2>
+        <button type="button" class="btn-close" (click)="noCancel()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you would like to discard all changes?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="noCancel()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+        <button type="button" (click)="onCancel()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-danger fw-bold" id="deleteModalLabel"></h2>
+        <button type="button" class="btn-close" (click)="noDelete()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you would like to delete this communication?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="noDelete()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+        <button type="button" (click)="onDelete()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+      </div>
+    </div>
+  </div>
+</div>

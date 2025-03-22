@@ -1,0 +1,22 @@
+.nav-tabs {
+    border-bottom: unset !important;
+    /* gap: 11px; */
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #0d6efd;
+    background-color: #0d6dfd00;
+    border-color: #0d6efd00 #0d6efd00 #0d6efd;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    /* color: #0d6efd; */
+    background-color: #f3f4f6;
+    border-radius: 0px !important;
+    /* border-color: #0d6efd #0d6efd #0d6efd; */
+}
+.nav-tabs .nav-link {
+    margin-bottom: -1px;
+    background: 0 0;
+    color: #565e64;
+    border-color: #565e6400 #565e6400 #636a6f2b;
+}

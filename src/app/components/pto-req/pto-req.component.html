@@ -1,0 +1,98 @@
+<main id="main" class="main">
+    <div class="pagetitle container-fluid">
+        <h1>PTO req</h1>
+        <!-- <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item">PTO req</li>
+            </ol>
+        </nav> -->
+    </div>
+    <section class="section container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Data tables</h4>
+
+                        <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+                            <a [routerLink]="['/leave/add']" class="btn btn-primary btn-sm">Add Time-off </a>
+                        </div>  -->
+
+                        <!-- <div class="col-2 mt-3 mb-4 text-center" style="width: 20%">
+                            <select id="users" class="form-select" [formControl]="userDropDownForm" (change)="onUserSelect($event)">
+                                <option value="">All</option>
+                                <option *ngFor="let user of users" [value]="user._id"> 
+                                   {{user.name}}
+                                </option>
+                            </select>
+                        </div> -->
+
+                      
+                        <div class="box-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr class="table-header">
+
+
+                                            <th scope="col">#</th>
+                                            <th scope="col">Emp. Name</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">PTO Req Time</th>
+                                            <th scope="col">Note</th>
+                                            <th scope="col">Status</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="border: unset !important;">
+
+
+
+                                        <tr class="table-row" *ngFor='let item of ptoReqs 
+                                    let i = index'>
+                                            <th scope="row">{{i+1}}</th>
+                                            <td class="col">{{item?.user?.firstName}} {{item?.user?.middleName}}
+                                                {{item?.user?.lastName}}</td>
+
+                                            <td class="col">{{item?.createdAt | date: "MM-dd-yyyy" }}</td>
+                                            <td class="col">{{item?.editTimesheet?.ptoReqTime}}</td>
+                                            <td class="col">{{item?.editTimesheet?.addNote}}</td>
+
+                                            <td class="col" >
+                                                <div class="select-container">
+                                                <select class="form-selects btn btn-sm"
+                                                    [(ngModel)]="item.editTimesheet.status"
+                                                    (ngModelChange)="statusUpdate(item._id, item.editTimesheet.status)"
+                                                    [class.approved]="item.editTimesheet.status === 'Approved'"
+                                                    [class.pending]="item.editTimesheet.status === 'Pending'"
+                                                    [class.denied]="item.editTimesheet.status === 'Cancelled'"
+                                                    [attr.disabled]="item.editTimesheet.status === 'Approved' || item.editTimesheet.status === 'Cancelled' ? true : null">
+                                                    <option *ngFor="let option of statusOptions" [value]="option.value">
+                                                        {{ option.key }}
+                                                    </option>
+                                                </select>
+                                                <i class="fas fa-chevron-down"></i>
+                                                </div>
+
+                                            </td>
+                                          
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>
+</ngx-spinner>

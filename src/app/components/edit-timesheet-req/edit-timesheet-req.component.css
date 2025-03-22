@@ -1,0 +1,21 @@
+/* Add these styles to your component's CSS file or your global styles */
+
+.approved {
+    background-color: green; /* Change the color based on your preference */
+  }
+  
+  .pending {
+    background-color: yellow; /* Change the color based on your preference */
+  }
+  
+  .denied {
+    background-color: red; /* Change the color based on your preference */
+  }
+
+  .error-message {
+    color: red; /* or any other color you prefer */
+    font-size: 14px; /* adjust font size as needed */
+    margin-top: 5px; /* add spacing between the textarea and the error message */
+  }
+  
+  

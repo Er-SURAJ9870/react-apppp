@@ -1,0 +1,84 @@
+<main id="main" class="main">
+    <div class="pagetitle container-fluid">
+        <h1>Communication</h1>
+        <!-- <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item">Communication</li>
+            </ol>
+        </nav> -->
+    </div>
+    <section class="section container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                       
+
+                        <div class=" gap-2 d-flex mt-2 flex-wrap justify-content-between align-items-center">
+                            <h4 class="card-title"> All Communications</h4>
+                            <a [routerLink]="['/notification/add']" class="btn btn-primary btn-sm"><span class="fas fa-plus"></span> Add </a>
+                        </div> 
+
+                       
+                        <div class="box-body">
+                            <div class="table-container">
+                               <table class="table">
+                                  <thead>
+                                     <tr class="table-header">
+                                       
+                                            <th scope="col">#</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Start At</th>
+                                            <th scope="col">Expired At</th>
+                                            <!-- <th scope="col">Status</th> -->
+                                   
+                                     </tr>
+                                  </thead>
+                                  <tbody style="border: unset !important;">
+                                  
+                                     <tr class="table-row" *ngFor='let item of notifications | paginate: {
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: page,
+                                        totalItems: count
+                                      };
+                                      let i = index' [routerLink]="['/notification/edit/', item._id]">
+                                        <th scope="row">{{((page-1)*itemsPerPage)+i+1}}</th>
+                                        <td class="col">{{item?.title}}</td>
+                                        <td>{{item.description}}</td>
+                                        <td class="col">{{item?.startDate | date: "MM-dd-yyyy" }}</td>
+                                        <td class="col">{{item?.endDate | date: "MM-dd-yyyy" }}</td>
+                                        <!-- <td scope="row">
+                                            <a class="form-check form-switch small toggle-button">
+                                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="item.status" (ngModelChange)="updateStatus(item._id,item.status)" id="flexSwitchCheckChecked"/>
+                                            </a>
+                                        </td> -->
+                                    </tr>
+                                  </tbody>
+                               </table>
+                            </div>
+                         </div>
+                        <div class="d-flex justify-content-center">
+                            <pagination-controls
+                              previousLabel="Prev"
+                              nextLabel="Next"
+                              (pageChange)="onTableDataChange($event)"
+                            >
+                            </pagination-controls>
+                          </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>  
+</ngx-spinner> 
+
+

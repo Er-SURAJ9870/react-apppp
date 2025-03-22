@@ -1,0 +1,129 @@
+.text-danger {
+    color: red;
+}
+
+
+.b-ele {
+    color: #0d6efd;
+    font-size: medium;
+    font-weight: bold;
+}
+
+/* .sheet{
+    margin-left: 300px;
+} */
+.light-red {
+    background-color: rgb(255, 186, 186);
+}
+.text-red {
+    color: red
+}
+.box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+   
+    font-size: 0.813rem;
+   
+  }
+
+
+/* Add this to your component's CSS file */
+
+/* Add this to your component's CSS file */
+
+.row-line{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+ 
+
+}
+@media (max-width: 768px) {
+    .row-line {
+      gap: 14px;
+    }
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header {
+    font-weight: bold;
+    color: #000;
+}
+
+.sheet {
+    /* background-color: #0d6efdb0; */
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+.table-header {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+  }
+  
+  .table-header th {
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+     white-space:unset !important;
+     /* width: 128px; */
+  
+  }
+  
+  .table-row {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    cursor: pointer;
+    border-radius: unset !important;
+  }
+  
+  .table-row, .table-row td {
+    padding:0.75rem;
+    padding-bottom: 0px;
+    text-align: center;
+  }
+
+  
+  .message {
+    grid-column: span 13;
+    text-align: center;
+    color: rgb(255, 145, 0);
+    padding-top: 1px;
+    padding-bottom: 0px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

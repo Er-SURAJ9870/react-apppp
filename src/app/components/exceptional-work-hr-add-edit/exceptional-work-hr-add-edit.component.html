@@ -1,0 +1,124 @@
+<main id="main" class="main" *ngIf="loading">
+    <div class="pagetitle container-fluid">
+        <h1>{{title}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/working-hrs">Working Hours</a></li>
+                <li class="breadcrumb-item">Custom Hours</li>
+                <li class="breadcrumb-item">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <section class="section container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-size mb-3" >
+                    <div class="card-body">
+                       <div class="pt-4 pb-2">
+                            <h5 class="card-title text-center pb-0 fs-4">{{title}}</h5>
+                            <!-- <p class="text-center small">Please ensure you mark your attendance accurately and on time</p> -->
+                        </div>
+                       <form class="row g-3 needs-validation" [formGroup]="addForm" (ngSubmit)="onSubmit()" novalidate>
+
+                            <div class="col-12">
+                                <!-- <label for="dob" class="form-label">Select date :</label>
+                                <mat-form-field class="date-picker ms-3" style="max-width: 120px;">
+                                    <input matInput [matDatepicker]="startPicker" formControlName="date" [readonly]="flag">
+                                    <mat-datepicker-toggle matSuffix [for]="startPicker" [disabled]="flag"></mat-datepicker-toggle>
+                                    <mat-datepicker #startPicker></mat-datepicker>
+                                </mat-form-field> -->
+                                <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                                    <mat-label>Select date</mat-label>
+                                    <input matInput [matDatepicker]="startPicker" formControlName="date" [readonly]="flag">
+                                    <mat-datepicker-toggle matSuffix [for]="startPicker" [disabled]="flag"></mat-datepicker-toggle>
+                                    <mat-datepicker #startPicker></mat-datepicker>
+                                  </mat-form-field>
+                            </div>
+                            
+                            <div class="col-md-3 col-12 custom-input">
+                                <div class="input-group">
+                                    <select class="form-control" id="openTime" formControlName="openTime">
+                                        <option *ngFor="let time of openTimeOptions" [value]="time">{{ time }}</option>
+                                    </select>
+                                
+                                    <select class="form-control" id="inMediterian" formControlName="inMediterian">
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-12 custom-input">
+                                <div class="input-group">
+                                    <select class="form-control" id="closeTime" formControlName="closeTime">
+                                        <option *ngFor="let time of closeTimeOptions" [value]="time">{{ time }}</option>
+                                    </select>
+                                
+                                    <select class="form-control" id="outMediterian" formControlName="outMediterian">
+                                        <option value="PM">PM</option>
+                                        <option value="AM">AM</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4 d-flex justify-content-center"> 
+                                <button class="btn btn-primary w-30 text-center" type="submit">Save</button>
+                                <button class="btn btn-danger ms-2" (click)="onCancelEvent($event)">Cancel</button>
+                                <!-- <button *ngIf="id" class="btn btn-warning ms-2" (click)="onDeleteEvent($event)">Delete</button> -->
+                            </div>
+                       </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>
+</ngx-spinner>
+
+
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title text-danger fw-bold" id="cancelModalLabel"></h2>
+          <button type="button" class="btn-close" (click)="noCancel()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you would like to discard all changes?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="noCancel()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+          <button type="button" (click)="onCancel()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title text-danger fw-bold" id="deleteModalLabel"></h2>
+          <button type="button" class="btn-close" (click)="noDelete()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you would like to delete?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="noDelete()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+          <button type="button" (click)="onDelete()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+        </div>
+      </div>
+    </div>
+</div> -->

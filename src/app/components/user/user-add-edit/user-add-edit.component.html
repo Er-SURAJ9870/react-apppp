@@ -1,0 +1,365 @@
+<main id="main" class="main" *ngIf="loading">
+  <div class="pagetitle container-fluid">
+    <h1>{{title}}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/user">Employees </a></li>
+        <li class="breadcrumb-item">{{title}}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section container-fluid">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card card-size mb-3 ">
+          <div class="card-body">
+            <div class=" pb-2">
+              <h5 class="card-title text-center pb-2 fs-4">{{title}}</h5>
+              <!-- <p class="text-center small">Enter Employee details to create account</p> -->
+              <div class=" gap-2 d-flex justify-content-sm-end  justify-content-center mb-3">
+                <a *ngIf="id" (click)="onRateUpdate($event)" class="btn btn-primary btn-sm">  <i class="bi bi-pencil" style="font-size: 12px;"></i> Pay Rate</a>
+              </div>
+
+            </div>
+            <form class="row g-4 needs-validation" [formGroup]="addForm" (ngSubmit)="onSubmit()" novalidate>
+              <div class="col-12 col-md-5">
+                <label for="firstName" class="form-label">First Name <span style="color: red;">*</span></label>
+                <input type="text" name="firstName" class="form-control" id="firstName" formControlName="firstName"
+                  required>
+                <div class="invalid-feedback">Please, enter your name!</div>
+              </div>
+              <div class="col-md-4 col-12">
+                <label for="middleName" class="form-label">Middle Name</label>
+                <input type="text" name="middleName" class="form-control" id="middleName" formControlName="middleName">
+              </div>
+              <div class="col-md-3 col-12">
+                <label for="lastName" class="form-label">Last Name <span style="color: red;">*</span></label>
+                <input type="text" name="lastName" class="form-control" id="lastName" formControlName="lastName"
+                  required>
+              </div>
+
+              <div class="col-12 d-flex  align-items-center gap-2">
+                <label for="yourEmail" class="form-label m-0">Email<span style="color: red;">*</span></label>
+                <input type="email" name="email" class="form-control" id="yourEmail" formControlName="email" required>
+                <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+              </div>
+
+              <div class="col-md-6 col-12 col-12 d-flex  align-items-center gap-2">
+                <label for="title" class="form-label m-0 ">Mobile Number <span style="color: red;">*</span></label>
+                <div class="input-group has-validation">
+                  <input type="text" class="form-control" placeholder="MobileNumber" aria-label="mobileNumber"
+                    aria-describedby="mobileNumber" formControlName="mobileNumber" mask="000-000-0000"
+                    placeholder="XXX-XXX-XXXX" required>
+                  <div class="invalid-feedback">Please, enter your socialSecurity in the format XXX-XXX-XXXX!</div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12 d-flex  align-items-center gap-2">
+                <label for="title" class="form-label m-0">Title <span style="color: red;">*</span></label>
+                <div class="input-group has-validation">
+                  <select id="title" class="form-select" formControlName="title" required>
+                    <option value="" disabled>Select Title</option>
+                    <option *ngFor="let title of titles" [value]="title"
+                      [selected]="title === addForm.get('title')?.value">{{ title }}</option>
+                  </select>
+                  <div class="invalid-feedback">Please choose a title.</div>
+                </div>
+              </div>
+
+
+              <div class="col-md-6 col-12  d-flex  align-items-center gap-2">
+                <label for="socialSecurity" class="form-label m-0">Social Security <span
+                    style="color: red;">*</span></label>
+                    <div class="w-100">
+                <input type="text" name="socialSecurity" class="form-control w-100" id="socialSecurity"
+                  formControlName="socialSecurity" required mask="000-00-0000" placeholder="XXX-XX-XXXX">
+                <span class="invalid-feedback">Please, enter your socialSecurity in the format XXX-XX-XXXX!</span>
+              </div>
+            </div>
+              <div class="col-md-6 col-12  d-flex  align-items-center gap-2">
+                <!-- <label for="dob" class="form-label m-0" >DOB<span style="color: red;">*</span> :</label> -->
+                <!-- <mat-form-field class="date-picker ms-3" style="max-width: 120px;">
+                            <input matInput [matDatepicker]="dobPicker" formControlName="dob">
+                            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dobPicker></mat-datepicker>
+                          </mat-form-field> -->
+                <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                  <mat-label>Select a DOB</mat-label>
+                  <input matInput [matDatepicker]="dobPicker" formControlName="dob">
+                  <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #dobPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div formGroupName="address" class="col-md-12 mt-0">
+                <div  class="g-4 row mt-0">
+              <div class="col-md-12   d-flex  align-items-center ">
+                <label for="validationCustom01" class="form-label m-0">Address-1 <span
+                    style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="validationCustom01" formControlName="address1"
+                  name="address1" required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-md-12  d-flex  align-items-center gap-2">
+                <label for="validationCustom02" class="form-label">Address-2</label>
+                <input type="text" class="form-control" id="validationCustom02" formControlName="address2"
+                  name="address2">
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+
+              <div class="col-md-4 col-12  d-flex  align-items-center gap-2">
+                <label for="validationCustom03" class="form-label m-0">City<span style="color: red;">*</span></label>
+                <div class="w-100">
+                <input type="text" class="form-control" id="validationCustom03" formControlName="city" name="city"
+                  required>
+                <div class="invalid-feedback">
+                  Please provide a valid city.
+                </div>
+              </div>
+              </div>
+
+              <div class="col-md-4 col-12  d-flex  align-items-center gap-2">
+                <label for="validationCustom04" class="form-label m-0">State<span style="color: red;">*</span></label>
+                <div  class="w-100">
+                <input type="text" class="form-control" id="validationCustom04" formControlName="state" name="state"
+                  required>
+                <div class="invalid-feedback">
+                  Please select a valid state.
+                </div>
+              </div>
+            </div>
+
+              <div class="col-md-4 col-12  d-flex  align-items-center gap-2">
+                <label for="validationCustom05" class="form-label m-0">Zip <span style="color: red;">*</span></label>
+                <div  class="w-100">
+                <input type="text" class="form-control" id="validationCustom05" formControlName="zipcode" name="zipcode"
+                  mask="00000" placeholder="00000" required>
+                <div class="invalid-feedback">
+                  Please provide a valid zip.
+                </div>
+              </div>
+              </div>
+
+              </div>
+            </div>
+
+
+
+
+              <div class="col-md-6 col-12  d-flex  align-items-center gap-2">
+                <label for="payType" class="form-label m-0">Pay type <span style="color: red;">*</span></label>
+                <div class="input-group has-validation">
+                  <select id="employeeType" class="form-select" formControlName="payType" required>
+                    <option value="" disabled>Select Pay Type</option>
+                    <option *ngFor="let payType of payTypes" [value]="payType"
+                      [selected]="payType === addForm.get('payType')?.value">{{ payType }}</option>
+                  </select>
+                  <div class="invalid-feedback">Please choose a Pay type.</div>
+                </div>
+              </div>
+
+
+              <div class="col-md-6 col-12 position-relative  d-flex  align-items-center gap-2">
+                <label for="employeeType" class="form-label m-0">Employee Type <span
+                    style="color: red;">*</span></label>
+                    <div  class="w-100">
+                <select id="employeeType" class="form-select w-100" formControlName="employeeType" required>
+                  <option value="" disabled>Select Employee Type</option>
+                  <option *ngFor="let employeeType of employeeTypes" [value]="employeeType"
+                    [selected]="employeeType === addForm.get('employeeType')?.value">{{ employeeType }}</option>
+                </select>
+                <div class="invalid-tooltip">
+                  EmployeeType required!.
+                </div>
+              </div>
+              </div>
+
+              <div class="col-md-6 col-12  d-flex  align-items-center gap-2" *ngIf="!id">
+                <label for="title" class="form-label m-0">Pay Rate<span style="color: red;">*</span></label>
+                <div class="input-group has-validation">
+                  <input type="number" class="form-control" placeholder="payRate" aria-label="payRate"
+                    aria-describedby="payRate" formControlName="payRate" placeholder="00" required>
+                  <div class="invalid-feedback">Please, enter payRate!</div>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-6 col-12 position-relative  d-flex  align-items-center gap-2">
+                <label for="role" class="form-label m-0">Role <span style="color: red;">*</span></label>
+                <select [disabled]="true" id="role" class="form-select w-100" formControlName="role" required>
+                  <option value="" disabled>Select Role Type</option>
+                  <option *ngFor="let role of roles" [value]="role" [selected]="role === addForm.get('role')?.value">{{
+                    role }}</option>
+                </select>
+                <div class="invalid-tooltip">
+                  Role required!.
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12  d-flex  align-items-center gap-2">
+                <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                  <mat-label>Select Hire date</mat-label>
+                  <input matInput [matDatepicker]="selectHirePicker" formControlName="startDate">
+                  <mat-datepicker-toggle matSuffix [for]="selectHirePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #selectHirePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 col-12 d-flex  align-items-center gap-2">
+                <!-- <label for="lastDate" class="form-label m-0">Last date :</label> -->
+                <mat-form-field class="custom-date-picker custom-height w-100" appearance="outline">
+                  <mat-label>Select Last date</mat-label>
+                  <input matInput [matDatepicker]="selectLastPicker" formControlName="lastDate">
+                  <mat-datepicker-toggle matSuffix [for]="selectLastPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #selectLastPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+
+
+
+              <div class="col-md-6 col-12 d-flex  align-items-center gap-2">
+                <label for="title" class="form-label m-0">Emergency Contact Name</label>
+                <div class="input-group has-validation">
+                  <input type="text" class="form-control" aria-label="emergencyContactName"
+                    aria-describedby="emergencyContactName" formControlName="emergencyContactName">
+                  <div class="invalid-feedback">Please, enter Emergency Contact Name!</div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-12 d-flex  align-items-center gap-2">
+                <label for="title" class="form-label m-0">Emergency Contact Phone</label>
+                <div class="input-group has-validation">
+                  <input type="text" class="form-control" aria-label="emergencyContactPhone"
+                    aria-describedby="emergencyContactPhone" formControlName="emergencyContactPhone" mask="000-000-0000"
+                    placeholder="XXX-XXX-XXXX">
+                  <div class="invalid-feedback">Please, enter your emergencyContactPhone in the format XXX-XXX-XXXX!
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 position-relative d-flex  align-items-center gap-2">
+                <label for="UploadimgControlInput" class="form-label m-0">Upload Profile Picture</label>
+                <input type="file" class="form-control" id="UploadimgControlInput" formControlName="image" name="image"
+                  (change)="uploadImage($event)" placeholder="Upload Image">
+                <div class="invalid-tooltip">
+                  Image required!
+                </div>
+                <!-- Loader -->
+                <span class="d-flex justify-content-center">
+                  <div *ngIf="isLoader" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </span>
+
+              </div>
+              
+              <div *ngIf="addForm.get('imageUrl')?.value" class="col-md-6 position-relative">
+                <img [src]="getPreviewImage()"
+                  style="border: 1px solid #ddd;border-radius: 2px; padding: 3px; width: 200px;"><br />
+              </div>
+
+
+              <div class="col-12 d-flex  align-items-center gap-2" *ngIf="!id">
+                <label for="yourPassword" class="form-label m-0">Password <span style="color: red;">*</span></label>
+                <div class="input-group">
+                  <input type="password" name="password" class="form-control" id="yourPassword"
+                    formControlName="password" required />
+                  <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                    <i class="bi bi-eye" [hidden]="passwordVisible"></i>
+                    <i class="bi bi-eye-slash" [hidden]="!passwordVisible"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback">Please enter your password!</div>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary" type="submit" [disabled]="!addForm.valid">Save</button>
+                <button class="btn btn-danger ms-2" (click)="formCancel($event)">Cancel</button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-muted text-center">
+            <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+  <p style="color: rgb(17, 238, 65)">Please Wait. </p>
+</ngx-spinner>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-danger fw-bold" id="deleteModalLabel"></h2>
+        <button type="button" class="btn-close" (click)="noDelete()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center">Are you sure you would like to discard all changes?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="noDelete()" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+        <button type="button" (click)="onDelete()" class="btn btn-primary" data-bs-dismiss="modal">YES</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="updatePayRateHistoryModal" tabindex="-1" aria-labelledby="updatePayRateHistoryModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="font-size: 20px; font-weight: 600;" class="modal-title" id="updatePayRateHistoryModalLabel">Update
+          Pay Rate</h2>
+        <button type="button" class="btn-close" (click)="cancelRateUpdate()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body ms-5">
+        <!-- Labels for Pay Rate Effective Date and Pay Rate at the top -->
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label" style="font-size: 14px; font-weight: 600;">Effective Date</label>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" style="font-size: 14px; font-weight: 600;">Pay Rate</label>
+          </div>
+        </div>
+
+        <!-- Render input boxes for each payRateHistory -->
+        <div *ngFor="let payRate of payRateHistory; let i = index">
+          <div class="row">
+            <div class="col-md-6">
+              <p style="font-size: 14px;">{{ payRate.payRateEffectiveDate }}</p>
+            </div>
+
+            <div class="col-md-4">
+              <input style="font-size: 12px;" type="number" class="form-control form-control-sm"
+                [(ngModel)]="payRate.payRate" [readonly]="payRate.isRead" />
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-3">
+          <button type="button" class="btn btn-primary btn-sm me-2" (click)="updatePayRateHistory()">Save</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="cancelRateUpdate()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

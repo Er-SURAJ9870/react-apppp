@@ -1,0 +1,41 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+  
+    <li class="nav-item" *ngIf="url === '/dashboard'"> <a class="nav-link" routerLink="/dashboard"> <i class="bi bi-grid"></i> <span>Dashboard</span></a></li>
+    <li class="nav-item" *ngIf="url !== '/dashboard'"><a class="nav-link collapsed" routerLink="/dashboard"> <i class="bi bi-grid"></i><span>Dashboard</span></a></li>
+    
+    <!-- <li class="nav-heading">Component</li> -->
+
+    <li class="nav-item" *ngIf="url === '/user'"> <a class="nav-link" routerLink="/user"> <i class="bi bi-person"></i> <span>Employees </span> </a></li>
+    <li class="nav-item" *ngIf="url !== '/user'"> <a class="nav-link collapsed" routerLink="/user"> <i class="bi bi-person"></i> <span>Employees </span> </a></li>
+
+    <!-- <li class="nav-item" *ngIf="url === '/ex-employee'"> <a class="nav-link" routerLink="/ex-employee"> <i class="bi bi-person"></i> <span>Ex-employees </span> </a></li> -->
+    <!-- <li class="nav-item" *ngIf="url !== '/ex-employee'"> <a class="nav-link collapsed" routerLink="/ex-employee"> <i class="bi bi-person"></i> <span>Ex-employees </span> </a></li> -->
+    
+    <li class="nav-item" *ngIf="url === '/employee-attendance'"> <a class="nav-link" routerLink="/employee-attendance"> <i class="bi bi-clock"></i> <span>Reports</span> </a></li>
+    <li class="nav-item" *ngIf="url !== '/employee-attendance'"> <a class="nav-link collapsed" routerLink="/employee-attendance"> <i class="bi bi-clock"></i> <span>Reports</span> </a></li>
+
+    <li class="nav-item" *ngIf="url === '/notification'"> <a class="nav-link" routerLink="/notification"> <i class="bi bi-bell"></i> <span>Communication</span> </a></li>
+    <li class="nav-item" *ngIf="url !== '/notification'"> <a class="nav-link collapsed" routerLink="/notification"> <i class="bi bi-bell"></i> <span>Communication</span> </a></li>
+
+    <li class="nav-item" *ngIf="url === '/leave'"> <a class="nav-link" routerLink="/leave"> <i class="bi bi-calendar-plus"></i> <span>Requests</span> &nbsp;
+      <span *ngIf="requestCount > 0" class="badge rounded-pill bg-danger">{{requestCount}}</span>
+    </a></li>
+    <li class="nav-item" *ngIf="url !== '/leave'"> <a class="nav-link collapsed" routerLink="/leave"> <i class="bi bi-calendar-plus"></i> <span>Requests</span> &nbsp; 
+      <span *ngIf="requestCount > 0" class="badge rounded-pill bg-danger">{{requestCount}}</span>
+    </a></li>
+
+    <li class="nav-item" *ngIf="url === '/holiday'"> <a class="nav-link" routerLink="/holiday"> <i class="bi bi-calendar-plus"></i> <span>Holiday</span></a></li>
+    <li class="nav-item" *ngIf="url !== '/holiday'"> <a class="nav-link collapsed" routerLink="/holiday"> <i class="bi bi-calendar-plus"></i> <span>Holiday</span></a></li>
+
+    <!-- <li class="nav-item" *ngIf="url === '/pto-req'"> <a class="nav-link" routerLink="/pto-req"> <i class="bi bi-calendar-plus"></i> <span>Pto req</span> &nbsp;<span *ngIf="PTOreqCount > 0" class="badge rounded-pill bg-danger">{{PTOreqCount}}</span></a></li>
+    <li class="nav-item" *ngIf="url !== '/pto-req'"> <a class="nav-link collapsed" routerLink="/pto-req"> <i class="bi bi-calendar-plus"></i> <span>Pto req</span> &nbsp; <span *ngIf="PTOreqCount > 0" class="badge rounded-pill bg-danger">{{PTOreqCount}}</span></a></li>
+
+    <li class="nav-item" *ngIf="url === '/pto-req'"> <a class="nav-link" routerLink="/timesheet-edit-req"> <i class="bi bi-calendar-plus"></i> <span>Timesheet req</span> &nbsp;<span *ngIf="timesheetReqCount > 0" class="badge rounded-pill bg-danger">{{timesheetReqCount}}</span></a></li>
+    <li class="nav-item" *ngIf="url !== '/pto-req'"> <a class="nav-link collapsed" routerLink="/timesheet-edit-req"> <i class="bi bi-calendar-plus"></i> <span>Timesheet req</span> &nbsp; <span *ngIf="timesheetReqCount > 0" class="badge rounded-pill bg-danger">{{timesheetReqCount}}</span></a></li> -->
+
+    <li class="nav-item" *ngIf="url === '/working-hrs'"> <a class="nav-link" routerLink="/working-hrs"> <i class="bi bi-card-list"></i> <span>Working Hours</span> </a></li>
+    <li class="nav-item" *ngIf="url !== '/working-hrs'"> <a class="nav-link collapsed" routerLink="/working-hrs"> <i class="bi bi-card-list"></i> <span>Working Hours</span> </a></li>
+
+  </ul>
+</aside>

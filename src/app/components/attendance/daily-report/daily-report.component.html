@@ -1,0 +1,92 @@
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Daily report</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item">Daily report</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Daily report</h4>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a (click)="generateExcel()" class="btn btn-secondary btn-sm">Export</a>
+                        </div>
+                        
+                        <div *ngIf= "isProgress" class="progress mt-2 mb-2">
+                            <div class="progress-bar" role="progressbar" [style.width.%]="dynamicValue" [attr.aria-valuenow]="dynamicValue" aria-valuemin="0" aria-valuemax="100">{{ dynamicValue }}%</div>
+                        </div>
+                        
+                        <form [formGroup]="form">
+                            <div class="row mb-3">
+                                <div class="col-3 ms-1">
+                                    <label for="dob" class="form-label">Select Date :</label>
+                                    <mat-form-field class="date-picker ms-1" style="max-width: 160px;">
+                                        <input matInput [matDatepicker]="dobPicker" formControlName="fromDate" (dateChange)="onFromDateChange()" name="fromDate" placeholder="MM/DD/YYYY">
+                                        <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #dobPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form> 
+
+                        <table class="table table-hover border-top">
+                            <thead>
+                                <tr>
+                                    <!-- <th scope="col">#</th> -->
+                                    <th scope="col">Emp. Name</th>
+                                    <th scope="col">Clock-in</th>
+                                    <th scope="col">Shift Start</th>
+                                    <th scope="col">Break-1</th>
+                                    <th scope="col">Lunch Break</th>
+                                    <th scope="col">Break-2</th>
+                                    <th scope="col">Add. Break</th>
+                                    <th scope="col">Clock-out</th>
+                                    <th scope="col">Shift End</th>
+                                    <th scope="col">Add. Hrs. Worked</th>
+                                    <th scope="col">Hrs Worked</th>
+                                    <th scope="col">Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor='let item of employees ; let i = index'>
+                                    <!-- <th scope="row">{{i+1}}</th> -->
+                                    <td style="width: 15%;">{{item?.name}}</td>
+                                    <td style="width: 7%;">{{item?.checkIn ? item.checkIn : '---'}}</td>
+                                    <td style="width: 7%;">{{item?.checkInTimeSystemSet}}</td>
+
+                                    <td style="width: 6%;">{{item?.break1Time}} mins</td>
+                                    <td style="width: 6%;">{{item?.lunchTime}} mins</td>
+                                    <td style="width: 6%;">{{item?.break2Time}} mins</td>
+
+                                    <td style="width: 6%;">---</td>
+                                    <td style="width: 7%;">{{item?.checkOut ? item.checkOut : '---'}}</td>
+                                    <td style="width: 7%;">{{item?.checkOutTimeSystemSet}}</td>
+                                    <td style="width: 6%;">---</td>
+                                    <td style="width: 6%;">{{item?.workHrs ? item?.workHrs : '---'}}</td>
+                                    <td style="width: 6%;">{{item?.remarks ? item?.remarks : '---' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>  
+</ngx-spinner> 
+
+
+  
+

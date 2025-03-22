@@ -1,0 +1,422 @@
+<main id="main" class="main">
+  <div class="pagetitle container-fluid ms-1">
+    <h1>Dashboard</h1>
+    <!-- <nav>
+         <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+         </ol>
+      </nav> -->
+  </div>
+  <section class="section dashboard container-fluid">
+    <!-- <div class="row">
+         <div class="col-lg-12">
+            <h5 class="card-title text-center pb-0 fs-4">{{today | date: "MM-dd-YYYY" }}</h5>
+         </div>
+      </div> -->
+
+    <div class="row" style="margin-bottom: 30px">
+      <div class="col-lg-12 ms-1">
+        <div class="row" style="gap: 8px">
+          <div class="col-xxl-2 col-md-4 responsive">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Check-in</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-clock"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>
+                      {{ dashboardData?.totalCheckIn }}/{{
+                        dashboardData?.totalUsers
+                      }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-2 col-md-4 responsive">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Check-out</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-clock"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>
+                      {{ dashboardData?.totalCheckOut }}/{{
+                        dashboardData?.totalUsers
+                      }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-2 col-md-4 responsive">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Time-Off</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-clock"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>
+                      {{ dashboardData?.totalLeave }}/{{
+                        dashboardData?.totalUsers
+                      }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--          caresole                -->
+          <div *ngIf="caresoleData.length"class="col-xxl responsive">
+            <div
+              id="carouselExampleIndicators"
+              style="height: 100%"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-indicators" style="margin-bottom: 0rem">
+                <button
+                  *ngFor="let item of caresoleData; let i = index"
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  [attr.data-bs-slide-to]="i"
+                  [class.active]="i === 0"
+                  [attr.aria-label]="'Slide ' + (i + 1)"
+                  style="background-color: #012d4d"
+                ></button>
+              </div>
+              <div
+                class="carousel-inner"
+                style="
+                  height: 100%;
+                  border-radius: 6px;
+                  background: #fff;
+                  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+                "
+              >
+                <div
+                  *ngFor="let item of caresoleData; let i = index"
+                  class="carousel-item"
+                  style="height: 100%"
+                  [class.active]="i === 0"
+                >
+                  <div class="custom-oval-background" style="height: 100%">
+                    <h5 class="card-title text-center">{{ item.title }}</h5>
+                    <p
+                      class="card-description text-center"
+                      style="padding-bottom: 20px"
+                    >
+                      {{ truncateDescription(item.description, 67) }}
+                    </p>
+                    <p class="my-card-footer text-end pe-3">
+                      {{ today | date : "MM-dd-yyyy" }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                class="carousel-control-prev carousel-btn"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+
+              <button
+                class="carousel-control-next carousel-btn"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="d-flex justify-content-center">
+      <div *ngIf="isLoader" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!isLoader">
+      <div class="col-lg-12">
+        <div class="card">
+          <!-- <div class="card-body">
+                  <h4 class="card-title text-center">Daily report</h4>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                     <a (click)="generateExcel()" class="btn btn-secondary btn-sm">Export</a>
+                  </div>
+
+                  <div *ngIf="isProgress" class="progress mt-2 mb-2">
+                     <div class="progress-bar" role="progressbar" [style.width.%]="dynamicValue"
+                        [attr.aria-valuenow]="dynamicValue" aria-valuemin="0" aria-valuemax="100">{{ dynamicValue }}%
+                     </div>
+                  </div>
+
+                  <form [formGroup]="form">
+                     <div class="row mb-3">
+                        <div class="col-3 ms-1">
+                           <label for="dob" class="form-label">Select Date :</label>
+                           <mat-form-field class="date-picker ms-1" style="max-width: 160px;">
+                              <input matInput [matDatepicker]="dobPicker" formControlName="fromDate"
+                                 (dateChange)="onFromDateChange()" name="fromDate" placeholder="MM/DD/YYYY">
+                              <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                              <mat-datepicker #dobPicker></mat-datepicker>
+                           </mat-form-field>
+                        </div>
+                     </div>
+                  </form>
+
+                  <table class="table table-hover border-top">
+                     <thead>
+                        <tr>
+                           <th scope="col">Emp. Name</th>
+                           <th scope="col">Clock-in</th>
+                           <th scope="col">Shift Start</th>
+                           <th scope="col">Break-1</th>
+                           <th scope="col">Lunch Break</th>
+                           <th scope="col">Break-2</th>
+                           <th scope="col">Add. Break</th>
+                           <th scope="col">Clock-out</th>
+                           <th scope="col">Shift End</th>
+                           <th scope="col">Add. Hrs. Worked</th>
+                           <th scope="col">Hrs Worked</th>
+                           <th scope="col">Comments</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <ng-container *ngFor='let item of employees ; let i = index'>
+                            <tr>
+                              <ng-container *ngIf="item.messageType === 'UNSCHEULED'">
+                                    <td style="width: 15%;">{{item?.name}}</td>
+                                    <td colspan="11" style="text-align: center; font-size: small">{{item.message}}</td>
+                                </ng-container>
+                                <ng-container *ngIf="item.messageType === 'FULL_LEAVE'">
+                                    <td style="width: 15%;">{{item?.name}}</td>
+                                    <td colspan="11" style="text-align: center; font-size: small; color: red;">
+                                        {{item.message}}</td>
+                                </ng-container>
+                                <ng-container *ngIf="item.messageType === 'GENERAL' || item.messageType === 'PARTIAL_LEAVE'">
+                                    <td style="width: 15%;">{{item?.name}}</td>
+                                    <td style="width: 7%;">{{ item.clockIn || '---' }}</td>
+                                    <td style="width: 7%;">{{ item.checkIn ? item?.checkIn : '---'}}</td>
+                                    <td style="width: 6%;">{{ item?.break1Time ? item.break1Time + ' mins' : '---' }}</td>
+                                    <td style="width: 6%;">{{ item?.lunchTime ? item.lunchTime + ' mins' : '---' }}</td>
+                                    <td style="width: 6%;">{{ item?.break2Time ? item.break2Time + ' mins' : '---' }}</td>
+                                    <td style="width: 6%;">{{ item?.additionalBreakInMins ? item.additionalBreakInMins + ' mins' : '---' }}</td>
+                                    <td style="width: 7%;">{{ item.clockOut || '---' }}</td>
+                                    <td style="width: 7%;">{{item.checkOut ? item?.checkOut : '---'}}</td>
+                                    <td style="width: 6%;">{{ item?.additionalWorkHr ? item.additionalWorkHr :'---' }}</td>
+                                    <td style="width: 6%;">{{item?.workHrs ? item?.workHrs : '---'}}</td>
+                                    <td style="width: 6%; font-size: small;" [ngClass]="{'text-red': item.messageType === 'PARTIAL_LEAVE'}">
+                                        {{ item?.remarks ? item?.remarks : '---' }}
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    
+                  </table>
+
+               </div> -->
+          <div class="card-body">
+            <div class="box box-card">
+              <h4 class="card-title">Daily Timesheet</h4>
+
+              <div *ngIf="isProgress" class="progress mt-2 mb-2">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  [style.width.%]="dynamicValue"
+                  [attr.aria-valuenow]="dynamicValue"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {{ dynamicValue }}%
+                </div>
+              </div>
+              <div class="box-header justify-between">
+                <form [formGroup]="form">
+                  <!-- <label for="dob" class="form-label">Select Date :</label> -->
+                  <!-- <mat-form-field class="date-picker ms-1" style="max-width: 110px;">
+                              <input matInput [matDatepicker]="dobPicker" formControlName="fromDate"
+                                 (dateChange)="onFromDateChange()" name="fromDate" placeholder="MM/DD/YYYY">
+                              <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                              <mat-datepicker #dobPicker></mat-datepicker>
+                           </mat-form-field> -->
+                  <mat-form-field
+                    class="custom-date-picker"
+                    appearance="outline"
+                  >
+                    <mat-label>Select a date</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      formControlName="fromDate"
+                      (dateChange)="onFromDateChange($event)"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </form>
+                <div class="filter-container">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a
+                      (click)="generateExcel()"
+                      class="btn btn-secondary btn-sm"
+                      >Export</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="table-container">
+                  <table class="table">
+                    <thead>
+                      <tr class="table-header">
+                        <th scope="col">Emp. Name</th>
+                        <th scope="col">Clock-in</th>
+                        <th scope="col">Shift Start</th>
+                        <th scope="col">Break-1</th>
+                        <th scope="col">Lunch Break</th>
+                        <th scope="col">Break-2</th>
+                        <th scope="col">Add. Break</th>
+                        <th scope="col">Clock-out</th>
+                        <th scope="col">Shift End</th>
+                        <th scope="col">Add. Hrs. Worked</th>
+                        <th scope="col">Hrs Worked</th>
+                        <th scope="col">Comments</th>
+                      </tr>
+                    </thead>
+                    <tbody style="border: unset !important">
+                      <ng-container
+                        *ngFor="let item of employees; let i = index"
+                      >
+                        <tr
+                          class="table-row"
+                          style="padding: 0"
+                          [routerLink]="[
+                            '/employee-attendance/detail/',
+                            item.user
+                          ]"
+                        >
+                          <div>{{ item?.name }}</div>
+                          <div>{{ item.clockIn || "---" }}</div>
+                          <div>{{ item.checkIn ? item?.checkIn : "---" }}</div>
+                          <div>
+                            {{
+                              item?.break1Time
+                                ? item.break1Time + " mins"
+                                : "---"
+                            }}
+                          </div>
+                          <div>
+                            {{
+                              item?.lunchTime ? item.lunchTime + " mins" : "---"
+                            }}
+                          </div>
+                          <div>
+                            {{
+                              item?.break2Time
+                                ? item.break2Time + " mins"
+                                : "---"
+                            }}
+                          </div>
+                          <div>
+                            {{
+                              item?.additionalBreakInMins
+                                ? item.additionalBreakInMins + " mins"
+                                : "---"
+                            }}
+                          </div>
+                          <div>{{ item.clockOut || "---" }}</div>
+                          <div>
+                            {{ item.checkOut ? item?.checkOut : "---" }}
+                          </div>
+                          <div>
+                            {{
+                              item?.additionalWorkHr
+                                ? item.additionalWorkHr
+                                : "---"
+                            }}
+                          </div>
+                          <div>{{ item?.workHrs ? item?.workHrs : "---" }}</div>
+                          <div
+                            style="font-size: small"
+                            [ngClass]="{
+                              'text-red': item.messageType === 'PARTIAL_LEAVE'
+                            }"
+                          >
+                            {{ item?.remarks ? item?.remarks : "---" }}
+                          </div>
+                          <div *ngIf="item.message" class="message">
+                            {{ item.message }}
+                          </div>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- <div class="box-footer">
+                        <div class="pagination-container">
+                           <nav aria-label="Page navigation" class="pagination-style-4">
+                              <ul class="pagination">
+                                 <li class="page-item disabled"><a class="page-link">Prev</a></li>
+                                 <li class="page-item"><a class="page-link active">1</a></li>
+                                 <li class="page-item"><a class="page-link">2</a></li>
+                                 <li class="page-item"><a class="page-link next-link">Next</a></li>
+                              </ul>
+                           </nav>
+                        </div>
+                     </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Spiner loader -->
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="default"
+  type="ball-spin-clockwise"
+>
+  <p style="color: rgb(17, 238, 65)">Please Wait.</p>
+</ngx-spinner>

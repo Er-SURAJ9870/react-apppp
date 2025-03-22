@@ -1,0 +1,186 @@
+<main id="main" class="main">
+    <div class="pagetitle">
+       <h1>Business setting</h1>
+       <nav>
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+             <li class="breadcrumb-item">Setting </li>
+          </ol>
+       </nav>
+    </div>
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+                            <li class="nav-item"> <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button></li>
+                            <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Business Details</button></li>
+                            <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#break-time-edit">Break time update</button></li>
+                            <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#coordinates-edit">Geo coordinates</button></li>
+
+                            <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Forget Password Code</button></li>
+
+                        </ul>
+
+                        <div class="tab-content pt-2">
+                            
+                            <!-- Overview -->
+                            <div class="tab-pane fade show active profile-overview ms-3" id="profile-overview">
+                                <h5 class="card-title">About</h5>
+                                <p class="small fst-italic">A System dashboard involves managing and overseeing system operations, user access, content creation, and ensuring data security, while facilitating a seamless user experience.</p>
+                                <h5 class="card-title">Business Details</h5>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Business Name</div>
+                                    <div class="col-lg-9 col-md-8">{{setting?.businessName}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Business Email</div>
+                                    <div class="col-lg-9 col-md-8">{{setting?.businessEmail}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Business contact</div>
+                                    <div class="col-lg-9 col-md-8">{{ formatMobileNumber(setting?.businessContact) }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Address</div>
+                                    <div class="col-lg-9 col-md-8">{{setting?.address}}</div>
+                                </div>
+                                <div class="card-footer text-muted text-center">
+                                <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Business details -->
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                                <form class="row g-3 needs-validation m-3" [formGroup]="settingForm" (ngSubmit)="settingSubmit()" novalidate>
+                                    <div class="row mb-3">
+                                        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Business Logo</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <img [src]= "getPreviewImage()"  alt="Profile">
+                                            <div class="pt-2">
+                                                <label for="profileImageInput" class="btn btn-primary btn-sm" title="Upload new profile image">
+                                                    <i class="bi bi-upload"></i>
+                                                </label>
+                                                <input type="file" id="profileImageInput" name="profileImage" style="display: none;" (change)="uploadImage($event)">
+
+                                                <a (click)="deleteImage()" class="btn btn-danger btn-sm" title="Remove my profile image">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Business Name</label>
+                                        <div class="col-md-6 col-lg-7"> <input name="businessName" type="text" class="form-control" id="businessName" formControlName="businessName"></div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Business Contact</label>
+                                        <div class="col-md-6 col-lg-7">
+                                            <input type="text" class="form-control" placeholder="businessContact" aria-label="businessContact" aria-describedby="businessContact" formControlName="businessContact">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                        <div class="col-md-6 col-lg-7">
+                                            <input type="text" class="form-control" placeholder="address" aria-label="address" aria-describedby="address" formControlName="address">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">Business Email</label>
+                                        <div class="col-md-6 col-lg-7"> <input name="businessEmail" type="businessEmail" class="form-control" id="Email" formControlName="businessEmail"></div>
+                                    </div>
+
+                                    <div class="text-center"> 
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                                <div class="card-footer text-muted text-center">
+                                <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Break time details -->
+                            <div class="tab-pane fade profile-edit pt-3" id="break-time-edit" style="margin-left: 250px;">
+                                <form class="row g-3 needs-validation m-3" [formGroup]="breakTimeForm" (ngSubmit)="breakSettingSubmit()" novalidate>
+                                    <div class="row mb-3">
+                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Break-1 time (In Mins)</label>
+                                        <div class="col-md-1 col-lg-2"> <input name="break1Time" type="text" class="form-control" id="break1Time" formControlName="break1Time"></div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="lunchTime" class="col-md-4 col-lg-3 col-form-label">Lunch time (In Mins)</label>
+                                        <div class="col-md-1 col-lg-2">
+                                            <input type="text" class="form-control" placeholder="lunchTime" aria-label="lunchTime" aria-describedby="lunchTime" formControlName="lunchTime">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="break2Time" class="col-md-4 col-lg-3 col-form-label">Break-2 time (In Mins)</label>
+                                        <div class="col-md-1 col-lg-2">
+                                            <input type="text" class="form-control" placeholder="break2Time" aria-label="break2Time" aria-describedby="break2Time" formControlName="break2Time">
+                                        </div>
+                                    </div>
+                                    
+                                    <div> 
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                                <div class="card-footer text-muted text-center">
+                                <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Location details -->
+                            <div class="tab-pane fade profile-edit pt-3" id="coordinates-edit" style="margin-left: 250px;">
+                                <form class="row g-3 needs-validation m-3" [formGroup]="coordinatesForm" (ngSubmit)="coordinatesSettingSubmit()">
+
+                                    <div class="row mb-3">
+                                        <label for="latitude" class="col-md-4 col-lg-3 col-form-label">Latitude</label>
+                                        <div class="col-md-1 col-lg-2">
+                                            <input type="number" class="form-control" placeholder="Latitude" aria-label="Latitude" aria-describedby="latitude" formControlName="latitude">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="longitude" class="col-md-4 col-lg-3 col-form-label">Longitude</label>
+                                        <div class="col-md-1 col-lg-2">
+                                            <input type="number" class="form-control" placeholder="Longitude" aria-label="Longitude" aria-describedby="longitude" formControlName="longitude">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="distanceLimit" class="col-md-4 col-lg-3 col-form-label">Distance Limit (In Meter)</label>
+                                        <div class="col-md-1 col-lg-2">
+                                            <input type="number" class="form-control" placeholder="distanceLimit" aria-label="distanceLimit" aria-describedby="distanceLimit" formControlName="distanceLimit">
+                                        </div>
+                                    </div>
+                                    <div> 
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                                <div class="card-footer text-muted text-center">
+                                    <i class="bi bi-arrow-left"></i><i class="bi bi-activity"></i><i class="bi bi-arrow-right"></i>
+                                </div>
+                            </div>
+
+
+                            <!-- Setting  -->
+
+                            <div class="tab-pane fade pt-3" id="profile-settings">
+                                <div class="row ms-1">
+                                    <div class="col-lg-1 label">CODE : -</div>
+                                    <div class="col-lg-2"> <span class="text-danger"> {{setting?.CODE}} </span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ </main>
+
+ <!-- Spiner loader -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: rgb(17, 238, 65)">Please Wait. </p>  
+</ngx-spinner> 

@@ -1,0 +1,17 @@
+.approved {
+  background-color: green;
+}
+
+.pending {
+  background-color: yellow;
+}
+
+.denied {
+  background-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}

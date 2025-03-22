@@ -1,0 +1,285 @@
+<main id="main" class="main">
+  <div class="pagetitle container-fluid">
+    <h1>Reports</h1>
+    <!-- <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item">Time Sheet</li>
+            </ol>
+        </nav> -->
+  </div>
+  <section class="section container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-end mt-3">
+              <div class="gap-2 d-flex justify-content-sm-end justify-content-center mb-3 me-2">
+                <a (click)="onPtoUpdate($event)" class="btn btn-primary btn-sm" [class.disabled]="!payCycleForm.value" [attr.aria-disabled]="!payCycleForm.value"> 
+                  <i class="bi bi-pencil" style="font-size: 12px;"></i> PTO Edit
+                </a>
+              </div>
+              
+              <a (click)="generateExcel()" class="btn btn-secondary btn-sm"
+                >Export</a
+              >
+            </div>
+            <div *ngIf="isProgress" class="progress mt-2 mb-2">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [style.width.%]="dynamicValue"
+                [attr.aria-valuenow]="dynamicValue"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ dynamicValue }}%
+              </div>
+            </div>
+            <form [formGroup]="form">
+              <div
+                class="mb-3 mt-3 d-flex flex-wrap gap-4 justify-content-between align-items-end"
+              >
+                <div class="d-flex flex-wrap gap-4 align-items-center">
+                 
+                  <div class="search-bar">
+                    <form
+                      class="search-form d-flex align-items-center"
+                      method="POST"
+                      action="#"
+                    >
+                      <input
+                        type="text"
+                        name="query"
+                        [(ngModel)]="searchTerm"
+                        placeholder="Search"
+                        title="Enter search keyword"
+                      />
+                      <button (click)="onSearch()" type="submit" title="Search">
+                        <i class="bi bi-search"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-3 align-items-center">
+                  <!-- <div class="">
+                    <select
+                      class="form-select"
+                      id="positionFilter"
+                      formControlName="fromDate"
+                      (change)="onFromDateChange()"
+                    >
+                      <option value="">From date</option>
+                      <option
+                        *ngFor="let fromCycle of fromCycles"
+                        [value]="fromCycle"
+                      >
+                        {{ fromCycle }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="">
+                    <select
+                      class="form-select"
+                      id="positionFilter"
+                      formControlName="toDate"
+                      (change)="onToDateChange()"
+                    >
+                      <option value="">To Date</option>
+                      <option
+                        *ngFor="let toCycle of toCycles"
+                        [value]="toCycle"
+                      >
+                        {{ toCycle }}
+                      </option>
+                    </select>
+                  </div> -->
+                  <div class=" " *ngIf="isPayCycle">
+                    <select
+                      class="form-select"
+                      id="positionFilter"
+                      [formControl]="payCycleForm"
+                      (change)="applyFilter()"
+                    >
+                      <option value="">Select Range</option>
+                      <option
+                        *ngFor="let payCycle of payCycles"
+                        [value]="payCycle"
+                      >
+                        {{ payCycle }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class=""
+                    *ngIf="
+                      form.get('fromDate')?.value && form.get('toDate')?.value
+                    "
+                    
+                  >
+                    <a class="btn btn-info btn-sm" (click)="resetFilters()"
+                      >Reset Filter</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="box-body">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr class="table-header">
+                      <th scope="col">#</th>
+                      <th scope="col">Emp. Name</th>
+                      <th scope="col">Work hrs</th>
+                      <th scope="col">Paid Hrs.</th>
+                      <th scope="col">Gross Pay</th>
+                      <th scope="col">Time-off</th>
+                      <th scope="col">PTO available</th>
+                      <th scope="col">PTO used</th>
+                      <th scope="col">PTO remaining</th>
+                    </tr>
+                  </thead>
+                  <tbody style="border: unset !important">
+                    <tr
+                      class="table-row"
+                      *ngFor="
+                        let item of employees
+                          | paginate
+                            : {
+                                itemsPerPage: itemsPerPage,
+                                currentPage: page,
+                                totalItems: count
+                              };
+                        let i = index
+                        "[routerLink]="['/employee-attendance/detail/', item.user]" [queryParams]="{ name: getEncodedName(item?.name) }"
+                    >
+
+      
+                      <th scope="row">
+                        {{ (page - 1) * itemsPerPage + i + 1 }}
+                      </th>
+                      <td>{{ item?.name }}</td>
+                      <td>{{ item?.workHrs }}</td>
+
+                      <td>
+                        {{ item?.netHrs }} /
+                        <span style="color: blue">{{
+                          item?.netHrsInDecimal
+                        }}</span>
+                      </td>
+                      <td>$ {{ item?.grossPay }}</td>
+                      <td>{{ item?.timeoff }}</td>
+
+                      <!-- <td>{{item?.YTD}}</td> -->
+
+                      <td>
+                        {{ item?.PTOInDecimal }} 
+                        <!-- /
+                        <span style="color: blue">{{
+                          item?.PTOInDecimal
+                        }}</span> -->
+                      </td>
+                      <!-- <td>{{ item?.leaveUsed }}</td> -->
+                      <td>{{ item?.leaveUsedInDecimal }}</td>
+                      <!-- <td>{{ item?.leaveRemaining }}</td> -->
+                      <td>{{ item?.leaveRemainingInDecimal }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center">
+              <pagination-controls
+                previousLabel="Prev"
+                nextLabel="Next"
+                (pageChange)="onTableDataChange($event)"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="updatePtoModal" tabindex="-1" aria-labelledby="updatePtoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="font-size: 20px; font-weight: 600;" class="modal-title" id="updatePtoModalLabel">Use PTO</h2>
+        <button type="button" class="btn-close" (click)="cancelPtoUpdate()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ptoEditForm">
+          <div class="container">
+            <div class="row mb-3">
+              <div class="col-12 text-center">
+                <select id="users" class="form-select" [formControl]="ptoEditForm.get('user')" (change)="onUserSelect($event)">
+                  <option *ngFor="let user of users" [value]="user._id">
+                    {{user?.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12 text-center" *ngIf="isLoading">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">Pay cycle:</div>
+              <div class="col-6">{{ ptoEditForm.get('payCycle').value }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">PTO YTD:</div>
+              <div class="col-6">{{ ptoEditForm.get('PTOInDecimal').value }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">Used PTO:</div>
+              <div class="col-6">{{ ptoEditForm.get('leaveUsedInDecimal').value }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">Remaining PTO:</div>
+              <div class="col-6">{{ ptoEditForm.get('leaveRemainingInDecimal').value }}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">PTO (hrs decimal) :</div>
+              <div class="col-6">
+                <input type="number" name="adjustPto" class="form-control" id="adjustPto" formControlName="adjustPto">
+                <div *ngIf="ptoEditForm.get('adjustPto').errors?.remainingPtoInvalid" class="text-danger">
+                  PTO should be less than remaining PTO.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="updatePTO()">Save</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="cancelPtoUpdate()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Spiner loader -->
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="default"
+  type="ball-spin-clockwise"
+>
+  <p style="color: rgb(17, 238, 65)">Please Wait.</p>
+</ngx-spinner>
+
+
