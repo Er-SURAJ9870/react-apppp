@@ -3,7 +3,7 @@ name: Deploy Angular to EC2
 on:
   push:
     branches:
-      - main  # Runs when you push to the main branch
+      - master  # Runs when you push to the main branch
 
 jobs:
   deploy:
