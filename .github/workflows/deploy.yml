@@ -1,0 +1,31 @@
+name: Deploy Angular to EC2
+
+on:
+  push:
+    branches:
+      - main  # Runs when you push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚀 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Install Dependencies & Build Angular App
+        run: |
+          npm install
+          npm run build -- --configuration=production
+
+      - name: 🔑 Setup SSH Connection
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📤 Deploy to EC2
+        run: |
+          scp -r dist/admindashboard/* ubuntu@${{ secrets.EC2_HOST }}:/var/www/html
+          ssh ubuntu@${{ secrets.EC2_HOST }} 'sudo systemctl restart nginx'
